@@ -1,309 +1,273 @@
+"use client";
 import Link from "next/link";
 import { Badge } from "@/components/Badge";
-import { SectionHeading } from "@/components/SectionHeading";
-
-const problems = [
-  "Олон хүнтэй бүсүүдэд хэрэгцээт байгууламж олоход хүндрэлтэй.",
-  "Жуулчдад хэл болон байнга өөрчлөгдөх хуваарь хүндрэлтэй.",
-  "Худалдаачид эрэлт, дарааллыг үр дүнтэй удирдаж чаддаггүй.",
-  "Зохион байгуулагчдад нэгтгэсэн бодит хугацааны өгөгдөл дутмаг.",
-  "Ажилтнуудын зохицуулалт, ослын хариу арга хэмжээ салангид.",
-  "Ивээн тэтгэгчдийн дижитал нөлөөллийг хэмжихэд хүндрэлтэй.",
-  "Эвентын дараах тайлан гаргалт гар ажиллагаатай, удаан.",
-];
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 const portalCards = [
   {
-    title: "Үзэгчийн туршлага",
-    description: "Интерактив газрын зураг, шууд хуваарь, хоолны захиалга, өдрийн дүгнэлт.",
+    title: "Үзэгч",
+    description: "Цэнгэлдэхийн бүх мэдээлэл халаасанд байх ухаалаг хөтөч. Хоолны захиалга, шууд хуваарь ба газрын зураг.",
+    href: "/app",
+    color: "bg-[#c01c2d]",
+    delay: 0.1,
   },
   {
-    title: "Худалдаачны үйл ажиллагаа",
-    description: "Захиалга, нөөцийн анхааруулга, орлогын ойлголт.",
+    title: "Худалдаачин",
+    description: "Олон дараалал үүсгэхгүйгээр ухаалгаар борлуулалт хийх, нөөцөө хянах жижиг бизнесүүдэд зориулсан шийдэл.",
+    href: "/vendor",
+    color: "bg-[#d9a441]",
+    delay: 0.2,
   },
   {
-    title: "Зохион байгуулагчийн команд төв",
-    description: "Шууд хяналтын самбар, ослын удирдлага, багийн зохицуулалт.",
+    title: "Зохион байгуулагч",
+    description: "Наадмыг бүхэлд нь хянах дижитал команд төв. Ослын шуурхай мэдээлэл, бодит цагийн төлөв байдал.",
+    href: "/organizer",
+    color: "bg-[#111827]",
+    delay: 0.3,
   },
   {
-    title: "Ивээн тэтгэгч ба түншийн төв",
-    description: "Кампанит ажлын үр дүн, идэвхжүүлэлт, шагналын хяналт.",
+    title: "Ивээн тэтгэгч",
+    description: "Хэрэглэгчдэд лоялти хөтөлбөр санал болгож, урсгалд аналитик хийн брэндээ илүү үр дүнтэйгээр байршуулах портал.",
+    href: "/sponsor",
+    color: "bg-[#1c4fd7]",
+    delay: 0.4,
   },
-];
-
-const features = [
-  "Стадионы интерактив газрын зураг",
-  "Шууд хуваарь",
-  "Дижитал захиалга",
-  "Олон хэлт туслах",
-  "Аюулгүй байдлын мэдээлэл",
-  "Наадмын тоглоомжуулсан аялал",
-  "Худалдаачны портал",
-  "Ивээн тэтгэгчийн менежер",
-  "Зохион байгуулагчийн команд төв",
-  "Эвентын дараах аналитик",
-];
-
-const demoRoutes = [
-  { title: "Үзэгчийн харагдац", href: "/app" },
-  { title: "Худалдаачны харагдац", href: "/vendor" },
-  { title: "Зохион байгуулагчийн харагдац", href: "/organizer" },
-  { title: "Ивээн тэтгэгчийн харагдац", href: "/sponsor" },
-  { title: "Ажилтны харагдац", href: "/staff" },
-];
-
-const businessModel = [
-  "Стадион операторуудад лиценз",
-  "Худалдаачны гүйлгээний шимтгэл ба премиум байршуулалт",
-  "Ивээн тэтгэгчийн байршуулалт, брэнд сорилтууд",
-  "Премиум аналитик, тайлангийн багц",
-  "Бусад эвентэд зориулсан брэндгүй платформ",
 ];
 
 export default function Home() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
+  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+
   return (
-    <div className="flex flex-1 flex-col bg-[var(--background)]">
-      <header className="border-b border-subtle bg-white/80">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-          <div className="space-y-1">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-muted">
-              Дижитал Наадам Юнивэрс
-            </p>
-            <h1 className="text-lg font-semibold text-slate-900">
-              Наадам Операцийн Систем
-            </h1>
+    <div ref={containerRef} className="flex min-h-screen flex-col bg-white dark:bg-[#050505] selection:bg-[#c01c2d] selection:text-white text-slate-200">
+      <header className="fixed top-0 z-50 w-full bg-black/40 backdrop-blur-xl border-b border-white/5">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <div className="flex flex-col">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#c01c2d]">Naadam.OS</span>
+            <span className="font-semibold text-sm tracking-tight text-white">Дижитал юнивэрс</span>
           </div>
-          <div className="hidden items-center gap-3 text-sm font-semibold text-slate-700 md:flex">
-            <Link href="/app" className="hover:text-slate-900">
-              Үзэгчийн демо
-            </Link>
-            <Link href="/organizer" className="hover:text-slate-900">
-              Зохион байгуулагчийн самбар
-            </Link>
-            <button className="rounded-full border border-subtle px-4 py-2">
-              Хакатон 2026
-            </button>
-          </div>
+          <nav className="hidden items-center gap-8 text-sm font-medium text-slate-400 md:flex">
+            <Link href="/app" className="hover:text-white transition-colors">Үзэгчийн апп</Link>
+            <Link href="/organizer" className="hover:text-white transition-colors">Команд төв</Link>
+            <Link href="/dev" className="hover:text-white transition-colors">Developer Console</Link>
+            <span className="rounded-full bg-white/10 px-4 py-1.5 text-xs text-white backdrop-blur-md">Верси 1.0</span>
+          </nav>
         </div>
       </header>
 
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-24 px-6 py-16">
-        <section className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="space-y-6">
-            <Badge tone="red">Дижитал Төв Цэнгэлдэх</Badge>
-            <h2 className="text-4xl font-semibold leading-tight text-slate-900 sm:text-5xl">
-              Наадам, орчин үеийн дижитал хот шиг зохион байгуулагдана.
-            </h2>
-            <p className="text-lg text-muted">
-              Төв цэнгэлдэхэд үзэгч, худалдаачин, ивээн тэтгэгч, зохион байгуулагчдад зориулсан вэб суурьтай үйл ажиллагааны систем. 1,000+
-              оролцогчийн хэрэгцээнд нийцсэн, премиум, гар утсанд төвлөрсөн туршлага.
-            </p>
-            <div className="flex flex-wrap gap-3">
+      <main className="relative overflow-hidden w-full flex-1">
+        {/* HERO SECTION */}
+        <section className="relative min-h-[95vh] flex items-center justify-center px-6 overflow-hidden">
+          <motion.div 
+            style={{ y: yBg }} 
+            className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_0%,_#1c4fd71a_0%,_#050505_60%)]" 
+          />
+          <div className="relative z-10 w-full max-w-7xl pt-24 text-center flex flex-col items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <div className="mb-8 inline-block rounded-full border border-white/10 bg-white/5 px-6 py-2 text-sm text-white/80 backdrop-blur-md">
+                <span className="mr-2 inline-block h-2 w-2 rounded-full bg-[#c01c2d]"></span>
+                Хакатон 2026 Төсөл
+              </div>
+            </motion.div>
+            
+            <motion.h1 
+              className="text-5xl font-medium tracking-tight text-white sm:text-7xl lg:text-8xl lg:leading-[1.05] max-w-5xl"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            >
+              Наадам бол зүгээр л уламжлал биш.<br />
+              Энэ бол амьд, <span className="italic text-[#1c4fd7]">дижитал хот.</span>
+            </motion.h1>
+            
+            <motion.p 
+              className="mt-10 max-w-2xl text-xl leading-relaxed text-slate-400"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+            >
+              Олон мянган хүн нэг дор цугларахад үүсдэг төөрөгдлийг цэгцэлж, хүн бүрт хүртээмжтэй, ойлгомжтой экосистемийг бүтээлээ.
+            </motion.p>
+            
+            <motion.div 
+              className="mt-14 flex flex-wrap items-center justify-center gap-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
+            >
               <Link
                 href="/app"
-                className="rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white"
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition-all hover:scale-105"
               >
-                Үзэгчийн демо үзэх
+                Үзэгчийн Демо 
+                <span className="transition-transform group-hover:translate-x-1">→</span>
               </Link>
               <Link
                 href="/organizer"
-                className="rounded-full border border-subtle bg-white px-6 py-3 text-sm font-semibold text-slate-700"
+                className="inline-flex items-center rounded-full px-8 py-4 text-sm font-medium text-slate-300 hover:text-white transition-colors border border-white/10 hover:bg-white/5"
               >
-                Зохион байгуулагчийн самбар нээх
+                Зохион байгуулагч
               </Link>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* SCROLLYTELLING SECTION 1 */}
+        <section className="relative py-40 sm:py-56 px-6">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+              <motion.div 
+                className="sticky top-40 h-fit"
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-20%" }}
+                transition={{ duration: 0.8 }}
+              >
+                <h2 className="text-4xl font-semibold tracking-tight text-white lg:text-6xl leading-[1.1]">
+                  Яагаад <br/>шинэчлэх хэрэгтэй вэ?
+                </h2>
+                <p className="mt-6 text-xl text-slate-400 leading-relaxed max-w-md">
+                  Олон жилийн турш наадам хуучны аргаар зохион байгуулагдаж ирсэн. Хүмүүс хаана юу болж байгааг мэдэхгүй, урт дараалалд зогсож, эвентийн дата дутмаг байв.
+                </p>
+              </motion.div>
+              
+              <div className="space-y-32 pt-20 lg:pt-0">
+                {[
+                  { number: "01", title: "Төөрөгдөл", text: "Хэрэгцээт байгууламж, хоолны газар, суудлаа олоход хүндрэлтэй." },
+                  { number: "02", title: "Хүртээмж", text: "Жуулчдад зориулсан англи хэл дээрх мэдээлэл байхгүй." },
+                  { number: "03", title: "Худалдаа", text: "Худалдаачид хүмүүсийн урсгал, дарааллыг үр дүнтэй удирдаж чаддаггүй." },
+                  { number: "04", title: "Хяналт", text: "Зохион байгуулагчдад шийдвэр гаргах шууд өгөгдөл, аналитик байхгүй." }
+                ].map((item, i) => (
+                  <motion.div 
+                    key={item.number} 
+                    className="flex flex-col gap-6"
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-10%" }}
+                    transition={{ duration: 0.8, delay: i * 0.1 }}
+                  >
+                    <span className="text-sm font-mono text-white/50 border-b border-white/10 pb-4 inline-block w-full">{item.number} / Асуудал</span>
+                    <h3 className="text-3xl text-white font-medium">{item.title}</h3>
+                    <p className="text-xl text-slate-400">{item.text}</p>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
+        </section>
 
-          <div className="rounded-3xl border border-subtle bg-white p-6 shadow-lg">
-            <div className="grid gap-4 sm:grid-cols-2">
-              {[
-                {
-                  title: "Шууд хуваарь",
-                  detail: "3 эвент шууд явагдаж байна",
-                },
-                {
-                  title: "Хоолны захиалга",
-                  detail: "12 идэвхтэй дараалал",
-                },
-                {
-                  title: "Газрын зураг анхааруулга",
-                  detail: "Хойд ариун цэврийн өрөө ачаалалтай",
-                },
-                {
-                  title: "Аналитик",
-                  detail: "940 хэрэглэгч идэвхтэй",
-                },
-              ].map((card) => (
-                <div
+        {/* BENTO GRID PORTALS */}
+        <section className="py-40 bg-[#0a0a0a] border-t border-white/5 px-6 relative">
+          <div className="mx-auto max-w-7xl">
+            <motion.div 
+              className="mb-20 max-w-2xl"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="text-4xl font-bold tracking-tight text-white lg:text-5xl">Нэг систем. Дөрвөн өнцөг.</h2>
+              <p className="mt-6 text-xl text-slate-400">Бид хэрэглэгч бүрт өөрт нь хамгийн их хэрэгтэй байгаа датаг ялган харуулж, нэгдмэл экосистем болгон зангидсан.</p>
+            </motion.div>
+            
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {portalCards.map((card, i) => (
+                <motion.div
                   key={card.title}
-                  className="rounded-2xl border border-subtle bg-slate-50 p-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: card.delay }}
+                  className="h-full"
                 >
-                  <p className="text-sm font-semibold text-slate-900">
-                    {card.title}
-                  </p>
-                  <p className="mt-2 text-sm text-muted">{card.detail}</p>
-                  <div className="mt-4 h-20 rounded-xl bg-gradient-to-br from-slate-200 to-white" />
-                </div>
+                  <Link href={card.href} className="group flex flex-col justify-between h-full overflow-hidden rounded-3xl bg-white/5 p-8 hover:bg-white/10 transition-all border border-white/5 hover:border-white/20">
+                    <div>
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full mb-8 text-white relative overflow-hidden">
+                        <div className={`absolute inset-0 ${card.color.replace('bg-[', '').replace(']', '')} opacity-20`} style={{ backgroundColor: card.color.replace('bg-[', '').replace(']', '') }} />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                        <span className="font-mono text-2xl relative z-10">{card.title[0]}</span>
+                      </div>
+                      <h3 className="text-2xl font-medium text-white mb-4">{card.title}</h3>
+                      <p className="text-md text-slate-400 leading-relaxed">{card.description}</p>
+                    </div>
+                    <div className="mt-12 flex items-center text-sm font-medium text-white/50 group-hover:text-white transition-colors">
+                      Орж үзэх →
+                    </div>
+                  </Link>
+                </motion.div>
               ))}
             </div>
-            <div className="mt-6 rounded-2xl border border-subtle bg-slate-900 px-5 py-4 text-white">
-              <p className="text-sm font-semibold">
-                Үйл ажиллагааны мэдээ: Ослын дуудлагыг 4 минутанд шийдсэн
-              </p>
-              <p className="text-xs text-white/70">
-                Үзэгчийн мэдээлэл, ажилтан, худалдаачдын бодит цагийн уялдаа.
-              </p>
-            </div>
           </div>
         </section>
 
-        <section className="grid gap-12 lg:grid-cols-[1fr_1.1fr]">
-          <SectionHeading
-            eyebrow="Асуудал"
-            title="Наадмын олон түмэн хурдан хөдөлнө. Харин зохицуулалт хоцордог."
-            description="Дижитал Наадам Юнивэрс нь үзэгч, худалдаачин, зохион байгуулалтын бүх мэдээллийг нэг эх сурвалжаас нэгтгэнэ."
-          />
-          <div className="grid gap-4 sm:grid-cols-2">
-            {problems.map((problem) => (
-              <div
-                key={problem}
-                className="rounded-2xl border border-subtle bg-white p-4 text-sm text-muted"
-              >
-                {problem}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-          <SectionHeading
-            eyebrow="Нэгдсэн шийдэл"
-            title="Нэг платформ. Олон портал. Задаргаа үгүй."
-            description="Бүх оролцогч өөрийн хэрэгцээнд нийцсэн орчинд, нэг дата дээр ажиллана."
-          />
-          <div className="grid gap-4 sm:grid-cols-2">
-            {portalCards.map((card) => (
-              <div
-                key={card.title}
-                className="rounded-2xl border border-subtle bg-surface p-5 shadow-sm"
-              >
-                <h3 className="text-base font-semibold text-slate-900">
-                  {card.title}
-                </h3>
-                <p className="mt-2 text-sm text-muted">{card.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section>
-          <SectionHeading
-            eyebrow="Үндсэн боломжууд"
-            title="Дижитал стадионы бүх хэрэгцээ нэг дор."
-            description="Хакатоны нөхцөлд бодитой, үзүүлэн хийхэд бэлэн бүтэц."
-          />
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {features.map((feature) => (
-              <div
-                key={feature}
-                className="rounded-2xl border border-subtle bg-white px-4 py-5 text-sm font-semibold text-slate-900 shadow-sm"
-              >
-                {feature}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-          <SectionHeading
-            eyebrow="Яагаад Монголд тохирох вэ"
-            title="Монголд тохируулсан, дэлхийд бэлэн."
-            description="Ухаалаг утасанд суурилсан, олон хэлтэй, өргөжих боломжтой платформ."
-          />
-          <div className="rounded-3xl border border-subtle bg-white p-6">
-            <ul className="space-y-4 text-sm text-muted">
-              {[
-                "Апп суулгах шаардлагагүй, шууд вэбээр ажиллана.",
-                "Олон хүнтэй орчинд үзэгч, жуулчин, үйлчилгээний багийг нэгтгэнэ.",
-                "Олон хэл ба соёлын тайлбарыг дэмжинэ.",
-                "Концерт, үзэсгэлэн, спортын эвентэд өргөжүүлж болно.",
-                "Ослын хариу, орлогын урсгалыг бодит цагт сайжруулна.",
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3">
-                  <span className="mt-1 h-2 w-2 rounded-full bg-[var(--naadam-blue)]" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        <section>
-          <SectionHeading
-            eyebrow="Демо чиглэлүүд"
-            title="Тус бүрийн туршлагад нэвтрэх."
-            description="Бүх портал хоорондоо холбогдсон, шууд демонд бэлэн."
-          />
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {demoRoutes.map((route) => (
-              <Link
-                key={route.title}
-                href={route.href}
-                className="rounded-2xl border border-subtle bg-surface px-4 py-5 text-sm font-semibold text-slate-900 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
-              >
-                {route.title}
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="grid gap-10 lg:grid-cols-[1fr_1fr]">
-          <SectionHeading
-            eyebrow="Бизнес загвар"
-            title="Наадам бүрт тогтвортой ажиллах бүтэц."
-            description="Орлогын урсгалуудыг платформд суурилуулсан."
-          />
-          <div className="rounded-3xl border border-subtle bg-white p-6">
-            <ul className="space-y-4 text-sm text-muted">
-              {businessModel.map((item) => (
-                <li key={item} className="flex items-start gap-3">
-                  <span className="mt-1 h-2 w-2 rounded-full bg-[var(--naadam-gold)]" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        <section className="rounded-3xl border border-subtle bg-slate-900 px-8 py-12 text-white">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="text-sm uppercase tracking-[0.2em] text-white/60">
-                Сүүлчийн уриалга
-              </p>
-              <h2 className="mt-2 text-3xl font-semibold">
-                Дижитал цэнгэлдэхийг нээе.
+        {/* FEATURE SHOWCASE */}
+        <section className="py-40 px-6 max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="inline-block rounded-full border border-[#1c4fd7]/30 bg-[#1c4fd7]/10 px-4 py-1.5 text-xs font-medium text-[#1c4fd7] mb-6">Онцлог давуу тал</div>
+              <h2 className="text-4xl font-semibold tracking-tight leading-[1.1] text-white sm:text-5xl">
+                Бүх зүйл хоорондоо <br/>шууд харилцана.
               </h2>
-              <p className="mt-3 text-sm text-white/70">
-                Хакатоны демо болон ирээдүйн өргөтгөлд бэлэн.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/app"
-                className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900"
+              <div className="mt-8 space-y-6 text-lg text-slate-400">
+                <p>Үзэгч хоол захиалахад худалдаачинд давхар мэдэгдэл очно. Худалдаачин захиалгаа бэлэн болох үед үзэгчид шууд дохио очихоос гадна арга хэмжээний зохион байгуулагчид эндэх ачааллыг харж байна.</p>
+                <p>Осол гарах, эсвэл хүн түгжрэх үед ажилтны хуваарь гэнэт өөрчлөгдөн цэргүүд очих бөгөөд газрын зураг улаан өнгөөр асч, хүмүүсийг өөр зүг рүү чиглүүлнэ.</p>
+              </div>
+            </motion.div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <motion.div 
+                className="space-y-4 pt-12"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
               >
-                Үзэгчийн демо
-              </Link>
-              <Link
-                href="/organizer"
-                className="rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white"
+                <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
+                  <div className="mb-6 h-10 w-10 outline outline-4 outline-red-500/20 rounded-full bg-red-500 flex items-center justify-center text-white font-bold">!</div>
+                  <p className="text-lg font-medium text-white">Бөөгнөрөл үүссэн</p>
+                  <p className="mt-2 text-sm text-slate-400">Автомат анхааруулга</p>
+                </div>
+                <div className="rounded-3xl border border-white/5 bg-[#0a0a0a] p-8 text-white relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-8 opacity-10 font-mono text-9xl leading-none -mt-4 -mr-4 text-white">12</div>
+                  <p className="text-5xl font-light tracking-tight relative z-10">12<span className="text-2xl text-white/50 tracking-normal">m</span></p>
+                  <p className="mt-4 text-sm text-white/60 relative z-10">Хүлээлгийн хугацаа</p>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                className="space-y-4"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
               >
-                Зохион байгуулагчийн самбар
-              </Link>
+                <div className="rounded-3xl border border-transparent bg-[#d9a441] p-8 text-black aspect-square flex flex-col justify-end">
+                  <p className="text-xl font-semibold leading-tight">Шууд орлогын <br/>хяналт</p>
+                  <p className="mt-2 text-sm text-black/70 font-medium">Худалдаачинд</p>
+                </div>
+                <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
+                  <p className="text-lg font-medium text-white">Олон хэлний дэмжлэг</p>
+                  <p className="mt-2 text-sm text-slate-400">AI орчуулга болон дэмжлэгтэй</p>
+                </div>
+              </motion.div>
             </div>
           </div>
         </section>
+
+        <footer className="border-t border-white/10 py-12 text-center text-sm text-slate-500 bg-white dark:bg-[#050505]">
+           <p>Дижитал Наадам Юнивэрс — Хакатон 2026. Монгол улсад дижитал шилжилтийг хурдасгах нь.</p>
+        </footer>
       </main>
     </div>
   );
